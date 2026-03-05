@@ -1,6 +1,6 @@
 # Group Chat Application
 
-**GitHub:** *(paste your repository link here after pushing, e.g. https://github.com/yourusername/group-chat-app)*
+**GitHub:** [https://github.com/AymanLakhnati/group-chat-app](https://github.com/AymanLakhnati/group-chat-app)
 
 A real-time multi-user group chat application built with **Java**, **Java Sockets (TCP)**, and **JavaFX**. The system uses a central server that distributes messages to all connected clients. This project fulfills the requirements for the Paradigms course mini-project (Server–Client architecture, Model–View separation, config-driven deployment).
 
