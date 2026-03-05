@@ -1,0 +1,45 @@
+@startuml UseCaseDiagram
+left to right direction
+skinparam packageStyle rectangle
+
+title Group Chat Application - Use Case Diagram
+
+actor "User\n(Client)" as User
+
+rectangle "TCP Client" {
+  usecase "Enter username" as UC1
+  usecase "Connect to server" as UC2
+  usecase "Send message" as UC3
+  usecase "View messages" as UC4
+  usecase "Request active users\n(allUsers)" as UC5
+  usecase "Disconnect\n(end / bye)" as UC6
+  usecase "Connect in read-only mode\n(no username)" as UC7
+}
+
+User --> UC1
+User --> UC2
+UC1 --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+User --> UC7
+
+UC7 ..> UC4 : includes\n(can only view)
+
+rectangle "TCP Server" {
+  usecase "Accept client connections" as S1
+  usecase "Distribute messages" as S2
+  usecase "Maintain user list" as S3
+  usecase "Log activity" as S4
+  usecase "Respond to allUsers" as S5
+}
+
+UC2 --> S1
+UC3 --> S2
+UC5 --> S5
+S1 ..> S3 : includes
+S1 ..> S4 : includes
+S2 ..> S4 : includes
+
+@enduml

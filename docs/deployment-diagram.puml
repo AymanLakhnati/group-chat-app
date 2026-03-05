@@ -1,0 +1,46 @@
+@startuml DeploymentDiagram
+skinparam nodeStyle rectangle
+skinparam componentStyle rectangle
+
+title Group Chat Application - Deployment Diagram
+
+node "Server Host" as server {
+  node "JVM" as jvm_server {
+    component [TCPServer\nJavaFX UI\nport 3000] as app_server
+  }
+}
+
+node "Client Host A" as clientA {
+  node "JVM" as jvm_a {
+    component [TCPClient\nJavaFX UI] as app_a
+  }
+}
+
+node "Client Host B" as clientB {
+  node "JVM" as jvm_b {
+    component [TCPClient\nJavaFX UI] as app_b
+  }
+}
+
+node "Client Host C" as clientC {
+  node "JVM" as jvm_c {
+    component [TCPClient\nJavaFX UI] as app_c
+  }
+}
+
+server -down-> clientA : TCP/IP\n(Socket)
+server -down-> clientB : TCP/IP\n(Socket)
+server -down-> clientC : TCP/IP\n(Socket)
+
+note right of server
+  Central server
+  Listens on configurable port (e.g. 3000)
+  One thread per client connection
+end note
+
+note right of clientA
+  Clients connect with
+  java TCPClient <host> <port>
+end note
+
+@enduml

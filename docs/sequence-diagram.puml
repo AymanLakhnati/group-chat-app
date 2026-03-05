@@ -1,0 +1,38 @@
+@startuml SequenceDiagram
+title Message Flow - Group Chat
+
+participant "Client A" as CA
+participant "Server" as S
+participant "Client B" as CB
+participant "Client C" as CC
+
+CA -> S : connect()
+S --> CA : accept
+CA -> S : "alice" (username)
+S --> CA : "OK"
+S -> S : log "Welcome alice"
+S -> CB : "[System] alice joined"
+S -> CC : "[System] alice joined"
+
+CB -> S : connect()
+S --> CB : accept
+CB -> S : "bob"
+S --> CB : "OK"
+S -> CA : "[System] bob joined"
+S -> CC : "[System] bob joined"
+
+CA -> S : "hello everyone"
+S -> S : format with time
+S --> CA : "[HH:mm:ss] alice: hello everyone"
+S --> CB : "[HH:mm:ss] alice: hello everyone"
+S --> CC : "[HH:mm:ss] alice: hello everyone"
+
+CB -> S : "allUsers"
+S --> CB : "USERS:alice,bob,Guest_1"
+
+CA -> S : "bye"
+S -> S : removeClient(alice)
+S --> CB : "[System] alice left"
+S --> CC : "[System] alice left"
+
+@enduml

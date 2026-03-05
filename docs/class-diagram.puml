@@ -1,0 +1,118 @@
+@startuml ClassDiagram
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+
+title Group Chat Application - Class Diagram
+
+package "tcp-server" {
+  class TCPServer {
+    - model : ServerModel
+    + start(Stage) : void
+    + main(String[]) : void
+  }
+  class ServerModel {
+    - usernames : ObservableList<String>
+    - logMessages : ObservableList<String>
+    - sessions : List<ClientSession>
+    - serverSocket : ServerSocket
+    - config : ServerConfig
+    + start() : void
+    + stop() : void
+    + broadcast(String, String) : void
+    + removeClient(String) : void
+    + sendUserList(String) : void
+    + log(String) : void
+    + getUsernames() : ObservableList
+    + getLogMessages() : ObservableList
+  }
+  class ServerConfig {
+    - port : int
+    + load() : void
+    + getPort() : int
+  }
+  class ClientSession {
+    - username : String
+    - socket : Socket
+    - out : PrintWriter
+    + getUsername() : String
+    + getOut() : PrintWriter
+  }
+  class ClientHandler {
+    - socket : Socket
+    - model : ServerModel
+    - out : PrintWriter
+    + readUsername() : String
+    + run(String) : void
+    + send(String) : void
+  }
+  class Protocol <<static>> {
+    READ_ONLY : String
+    OK : String
+    USERS_PREFIX : String
+    MAX_USERNAME_LENGTH : int
+  }
+  class ServerViewController {
+    + build(ServerModel) : GridPane
+  }
+  TCPServer --> ServerModel : uses
+  ServerModel ..> Protocol : uses
+  ClientHandler ..> Protocol : uses
+  TCPServer --> ServerConfig : uses
+  TCPServer --> ServerViewController : uses
+  ServerModel --> ServerConfig : uses
+  ServerModel --> ClientSession : holds
+  ServerModel --> ClientHandler : creates
+  ClientHandler --> ServerModel : notifies
+  ClientHandler --> ClientSession : -
+  ServerViewController --> ServerModel : binds to
+}
+
+package "tcp-client" {
+  class TCPClient {
+    - serverHost : String
+    - serverPort : int
+    + start(Stage) : void
+    + main(String[]) : void
+  }
+  class ClientModel {
+    - messages : ObservableList<String>
+    - socket : Socket
+    - connected : boolean
+    - readOnly : boolean
+    - username : String
+    + connect(String, int, String) : boolean
+    + send(String) : void
+    + disconnect() : void
+    + getMessages() : ObservableList
+    + setOnDisconnect(Runnable) : void
+  }
+  class ClientConfig {
+    - host : String
+    - port : int
+    + load() : void
+    + getHost() : String
+    + getPort() : int
+    + setHost(String) : void
+    + setPort(int) : void
+  }
+  class Protocol <<static>> {
+    READ_ONLY : String
+    USERS_PREFIX : String
+    CONNECT_TIMEOUT_MS : int
+  }
+  class ClientViewController {
+    - host : String
+    - port : int
+    - model : ClientModel
+    + buildLogin(GridPane, Runnable) : GridPane
+    + buildChat(Runnable) : GridPane
+    + getModel() : ClientModel
+  }
+  TCPClient --> ClientViewController : uses
+  TCPClient --> ClientConfig : uses
+  ClientViewController --> ClientModel : uses
+  ClientModel --> ClientConfig : -
+  ClientModel ..> Protocol : uses
+}
+
+@enduml

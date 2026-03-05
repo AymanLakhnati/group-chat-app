@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TCPServer" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.groupchat.server.TCPServer" />
+    <module name="tcp-server" />
+    <option name="VM_PARAMETERS" value="--add-modules javafx.controls,javafx.fxml" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

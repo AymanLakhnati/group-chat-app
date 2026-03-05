@@ -1,0 +1,12 @@
+target/
+.maven/
+*.class
+*.jar
+*.war
+!**/lib/*.jar
+.idea/*
+!.idea/runConfigurations/
+*.iml
+*.ipr
+*.iws
+.DS_Store
