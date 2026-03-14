@@ -1,12 +1,18 @@
 @echo off
 cd /d "%~dp0"
-set MavenDir=.maven\apache-maven-3.9.9\bin
-if exist "%MavenDir%\mvn.cmd" (
-    echo Building with local Maven...
-    call "%MavenDir%\mvn.cmd" clean package -q
-) else (
-    echo Building project...
+where mvn >nul 2>nul
+if %ERRORLEVEL% equ 0 (
+    echo Building project with system Maven...
     call mvn clean package -q
+) else (
+    if exist "scripts\setup-and-build.ps1" (
+        echo Maven not found. Downloading latest Maven and building...
+        powershell -ExecutionPolicy Bypass -File "scripts\setup-and-build.ps1"
+    ) else (
+        echo Build failed. Maven not found and scripts\setup-and-build.ps1 is missing.
+        pause
+        exit /b 1
+    )
 )
 if %ERRORLEVEL% neq 0 (
     echo Build failed. Run scripts\setup-and-build.ps1 first to download Maven, or install Maven.
