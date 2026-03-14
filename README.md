@@ -24,6 +24,23 @@ mvn clean package
 
 Produces `tcp-server/target/tcp-server-1.0-SNAPSHOT.jar` and `tcp-client/target/tcp-client-1.0-SNAPSHOT.jar`. On Windows you can use `build.bat`.
 
+### No Maven installed? Download latest Maven automatically
+
+Linux/macOS:
+
+```bash
+chmod +x scripts/setup-and-build.sh
+./scripts/setup-and-build.sh
+```
+
+Windows PowerShell:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\setup-and-build.ps1
+```
+
+Both scripts fetch the latest Apache Maven release, install it into `.maven/`, and build the project.
+
 ---
 
 ## Run
